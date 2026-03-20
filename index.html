@@ -432,6 +432,221 @@ body {
   margin-bottom: 8px;
 }
 
+/* SUMMIT */
+.summit-hero {
+  text-align: center;
+  padding: 48px 28px;
+  background: linear-gradient(180deg, #1a1510 0%, var(--bg-card) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.summit-hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: 50%; transform: translateX(-50%);
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, #d4a84315 0%, transparent 60%);
+  pointer-events: none;
+}
+.summit-overline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.summit-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 7vw, 72px);
+  letter-spacing: 3px;
+  line-height: 0.95;
+  background: linear-gradient(180deg, #fff 30%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 24px;
+}
+.summit-details {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.summit-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+.summit-detail-icon {
+  font-size: 18px;
+}
+.summit-detail strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.summit-keynote {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 28px;
+  text-align: center;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.summit-keynote::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent-gradient);
+}
+.summit-keynote-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.summit-keynote-speaker {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.summit-keynote-topic {
+  font-size: 16px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+.summit-schedule {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.summit-talk {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px 24px;
+  transition: all 0.3s ease;
+}
+.summit-talk:hover { border-color: #333; transform: translateY(-2px); }
+.summit-talk-topic {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.summit-talk-speaker {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.summit-cta {
+  background: linear-gradient(135deg, #1a1510, var(--bg-card));
+  border: 1px solid #2a2215;
+  border-radius: 16px;
+  padding: 36px 32px;
+  text-align: center;
+}
+.summit-cta-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.summit-cta-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.summit-cta-text strong {
+  color: var(--text-primary);
+}
+
+/* ESPYS */
+.espys-year-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+.espys-year-header {
+  padding: 24px 28px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.espys-year-badge {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  letter-spacing: 2px;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+.espys-year-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.espys-content {
+  padding: 28px;
+}
+.espys-video-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  background: #000;
+}
+.espys-video-wrap video {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+}
+.espys-caption {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+.espys-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
 /* PUNISHMENT TIERS */
 .tier-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
 .tier-card {
@@ -676,6 +891,8 @@ body {
   <div class="nav-tab" onclick="showSection('matchlog')">Match Log</div>
   <div class="nav-tab" onclick="showSection('awards')">Awards & Titles</div>
   <div class="nav-tab" onclick="showSection('bios')">Coach Bios</div>
+  <div class="nav-tab" onclick="showSection('espys')">ESPYS</div>
+  <div class="nav-tab" onclick="showSection('summit')">Summit</div>
   <div class="nav-tab" onclick="showSection('wheel')">Punishment Tiers</div>
 </div>
 
@@ -911,6 +1128,93 @@ body {
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- ==================== ESPYS ==================== -->
+<div class="section" id="espys">
+  <div class="section-title">ESPYS</div>
+  <div class="section-sub">Season highlights, memorable moments, and league award ceremonies</div>
+
+  <div class="espys-year-card">
+    <div class="espys-year-header">
+      <div class="espys-year-badge">2033</div>
+      <div class="espys-year-label">Season Highlights</div>
+    </div>
+    <div class="espys-content">
+      <div class="espys-video-wrap">
+        <video controls preload="metadata" playsinline>
+          <source src="espys_2033.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="espys-caption">2033 ESPYS Play of the Year — LSU vs. USC</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== SUMMIT ==================== -->
+<div class="section" id="summit">
+  <div class="section-title">Founders Summit</div>
+  <div class="section-sub">The premier gathering of CFB Dynasty League coaches</div>
+
+  <div class="summit-hero">
+    <div class="summit-overline">CFB Dynasty League Presents</div>
+    <div class="summit-title">FOUNDERS<br>SUMMIT 2026</div>
+    <div class="summit-details">
+      <div class="summit-detail">
+        <span class="summit-detail-icon">📅</span>
+        <span><strong>June 5, 2026</strong></span>
+      </div>
+      <div class="summit-detail">
+        <span class="summit-detail-icon">📍</span>
+        <span><strong>Backyard BBQ Palace</strong></span>
+      </div>
+      <div class="summit-detail">
+        <span class="summit-detail-icon">🕓</span>
+        <span><strong>4:00 PM</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="summit-keynote">
+    <div class="summit-keynote-label">Keynote Speaker</div>
+    <div class="summit-keynote-speaker">The Truth</div>
+    <div class="summit-keynote-topic">"The Secret to the High School Hall of Fame"</div>
+  </div>
+
+  <div class="section-title" style="font-size:24px; margin-bottom:4px;">Speaker Lineup</div>
+  <div class="section-sub" style="margin-bottom:20px;">Topics and presentations from league coaches</div>
+
+  <div class="summit-schedule">
+    <div class="summit-talk">
+      <div class="summit-talk-topic">User Matchups: "Don't Be Scared" &amp; The 10-Year Rule</div>
+      <div class="summit-talk-speaker" style="color:#e74c3c;">Angry</div>
+    </div>
+    <div class="summit-talk">
+      <div class="summit-talk-topic">The Wildcat</div>
+      <div class="summit-talk-speaker" style="color:#2ecc71;">Gooch</div>
+    </div>
+    <div class="summit-talk">
+      <div class="summit-talk-topic">Why Mid Majors Are the Best Programs</div>
+      <div class="summit-talk-speaker" style="color:#3498db;">BigLaw</div>
+    </div>
+    <div class="summit-talk">
+      <div class="summit-talk-topic">Deep Crossers</div>
+      <div class="summit-talk-speaker" style="color:#9b59b6;">Michael</div>
+    </div>
+    <div class="summit-talk">
+      <div class="summit-talk-topic">League Records Updates</div>
+      <div class="summit-talk-speaker" style="color:#e67e22;">Eagle</div>
+    </div>
+  </div>
+
+  <div class="summit-cta">
+    <div class="summit-cta-title">Interested in Joining the Best Dynasty That Ever Existed?</div>
+    <div class="summit-cta-text">
+      <strong>Spots are full.</strong> Currently we are only accepting program sponsors. If you feel you have what it takes, you can submit <strong>10 full game tapes</strong> to be analyzed by <strong>Gooch</strong> for authenticity and review.
+    </div>
   </div>
 </div>
 

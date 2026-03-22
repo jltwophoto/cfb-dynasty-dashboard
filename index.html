@@ -950,6 +950,7 @@ body {
   <div class="nav-tab" onclick="showSection('espys')">ESPYS</div>
   <div class="nav-tab" onclick="showSection('summit')">Summit</div>
   <div class="nav-tab" onclick="showSection('wheel')">Punishment Tiers</div>
+  <div class="nav-tab" onclick="showSection('spinner')">Spin the Wheel</div>
 </div>
 
 <!-- ==================== OVERVIEW ==================== -->
@@ -1002,7 +1003,7 @@ body {
 <!-- ==================== MATCH LOG ==================== -->
 <div class="section" id="matchlog">
   <div class="section-title">Game Log</div>
-  <div class="section-sub">Every head-to-head matchup in league history (2025 – 2033)</div>
+  <div class="section-sub">Every head-to-head matchup in league history (2025 – 2034)</div>
 
   <div class="filter-bar" id="match-filters">
     <div class="filter-btn active" onclick="setMatchFilter('all')">All Games</div>
@@ -1461,8 +1462,63 @@ body {
   </div>
 </div>
 
+<!-- ==================== SPIN THE WHEEL ==================== -->
+<div class="section" id="spinner">
+  <div class="section-title">Spin the Wheel</div>
+  <div class="section-sub">Select a punishment tier, then spin to determine your fate</div>
+
+  <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:30px;" id="tier-select-btns">
+    <div class="filter-btn active" onclick="selectTier('heisman')">Heisman</div>
+    <div class="filter-btn" onclick="selectTier('tier1')">Tier 1</div>
+    <div class="filter-btn" onclick="selectTier('tier2')">Tier 2</div>
+    <div class="filter-btn" onclick="selectTier('tier3')">Tier 3</div>
+    <div class="filter-btn" onclick="selectTier('death')">Death Penalty</div>
+  </div>
+
+  <div style="display:flex; flex-direction:column; align-items:center;">
+    <!-- Wheel -->
+    <div style="position:relative; width:340px; height:340px; margin-bottom:24px;">
+      <!-- Pointer -->
+      <div style="position:absolute; top:-18px; left:50%; transform:translateX(-50%); z-index:10; font-size:32px; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5));">▼</div>
+      <canvas id="wheelCanvas" width="340" height="340" style="border-radius:50%; box-shadow:0 0 40px rgba(212,168,67,0.2);"></canvas>
+    </div>
+
+    <!-- Spin Button -->
+    <button id="spinBtn" onclick="spinWheel()" style="
+      padding:14px 48px;
+      font-family:'Bebas Neue',sans-serif;
+      font-size:22px;
+      letter-spacing:3px;
+      color:#000;
+      background:linear-gradient(135deg,#d4a843,#b8860b);
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      transition:all 0.3s ease;
+      margin-bottom:28px;
+    ">SPIN</button>
+
+    <!-- Result -->
+    <div id="spinResult" style="
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:24px 32px;
+      text-align:center;
+      max-width:500px;
+      width:100%;
+      min-height:80px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    ">
+      <span style="color:var(--text-muted); font-family:'Barlow Condensed',sans-serif; font-size:15px; letter-spacing:1px;">Select a tier and spin to reveal your punishment</span>
+    </div>
+  </div>
+</div>
+
 <div class="footer">
-  CFB DYNASTY LEAGUE HQ &bull; DATA THROUGH 2033 SEASON &bull; BUILT FOR THE CULTURE
+  CFB DYNASTY LEAGUE HQ &bull; DATA THROUGH 2034 SEASON &bull; BUILT FOR THE CULTURE
 </div>
 
 <script>
@@ -1738,7 +1794,7 @@ renderBarChart('wins-chart', [
   { name:'Eagle', value:2 },
   { name:'BigLaw', value:1 },
   { name:'Gooch', value:0 },
-], 8);
+], 9);
 renderBarChart('nattys-chart', [
   { name:'Michael', value:4 },
   { name:'Angry', value:3 },
@@ -1774,6 +1830,289 @@ function renderSummit() {
   `).join('');
 }
 renderSummit();
+
+// ============================================================
+//  SPIN THE WHEEL
+// ============================================================
+const TIER_DATA = {
+  heisman: {
+    label: 'Heisman / Awards',
+    color: '#d4a843',
+    options: ['0 games missed','1 game missed','2 games missed','3 games missed','4 games missed']
+  },
+  tier1: {
+    label: 'Tier 1',
+    color: '#3b82f6',
+    options: [
+      'QB1 misses game','RB1 misses game','WR1 misses game','EDGE misses game',
+      'MIKE misses game','CB1 misses game','FS misses game','SS misses game',
+      'Kicker misses game','Punter misses game','D coordinator misses game (sim defense)',
+      'MIKE and WILL miss game','WR and TE miss game','LB and CB miss game',
+      'RT and RG miss game','DT and EDGE miss game','FS and SS miss game',
+      'MIKE LB and WILL miss game','Kicker and Punter miss game',
+      'QB1/RB1/WR1 all miss first half','DT1/EDGE/MIKE all miss first half',
+      'CB1/CB2/FS all miss first half','Nothing — free pass!'
+    ]
+  },
+  tier2: {
+    label: 'Tier 2',
+    color: '#f59e0b',
+    options: [
+      'Cannot recruit home state','Cannot recruit 4/5 stars',
+      'Must recruit & sign 10 × 1-star players','No recruiting visits during season',
+      'Loss of 15 roster spots (70 max)','NFL roster size (53 man)',
+      'Must play all users in season (all away)','Dropped to Independent for 3 years',
+      'Max 12 scholarships to 4+ star players','Must cut all TEs',
+      'Must cut all MIKE LB','Must cut all Kickers',
+      'No scholarships after week 5','No scholarships until week 6',
+      'Cannot recruit offense in season','Cannot recruit defense in season',
+      'Cannot recruit offense in portal','Cannot recruit defense in portal',
+      'Cannot recruit in season','Cannot use portal',
+      'Unable to convince players to stay','Free choice: pick any Tier 2'
+    ]
+  },
+  tier3: {
+    label: 'Tier 3',
+    color: '#ef4444',
+    options: [
+      'Abandon school — take any offer','Abandon school — second round offers only',
+      'Forced sim loss / exit 1 year of playoffs','Forgo all recruiting for 1 year',
+      'NFL roster size for 3 years (53)','Must recruit & sign 20 × 1-star players',
+      'Spin Tier 2 wheel 3× for season','Tier 1 all games + Tier 2 for season',
+      'Spin Tier 2 wheel 2× for season','Pick any 1 Tier 3 consequence'
+    ]
+  },
+  death: {
+    label: 'Death Penalty',
+    color: '#dc2626',
+    options: [
+      'Retire & restart at 1-star program','Take 2★ or less job — stay 3 years',
+      'Only 2-star or less recruits for 3 years','Only 1-star recruits for 3 years',
+      'Forgo portal for 3 years','Forgo in-season recruiting for 3 years',
+      'Forgo playoffs for 3 years'
+    ]
+  }
+};
+
+let currentTier = 'heisman';
+let isSpinning = false;
+let currentRotation = 0;
+
+function selectTier(tier) {
+  currentTier = tier;
+  document.querySelectorAll('#tier-select-btns .filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('spinResult').innerHTML = '<span style="color:var(--text-muted); font-family:\'Barlow Condensed\',sans-serif; font-size:15px; letter-spacing:1px;">Tier selected — spin to reveal your punishment</span>';
+  drawWheel();
+}
+
+function drawWheel() {
+  const canvas = document.getElementById('wheelCanvas');
+  const ctx = canvas.getContext('2d');
+  const tier = TIER_DATA[currentTier];
+  const opts = tier.options;
+  const n = opts.length;
+  const cx = 170, cy = 170, r = 160;
+  const arc = (2 * Math.PI) / n;
+
+  ctx.clearRect(0, 0, 340, 340);
+
+  // Generate colors for segments
+  const baseHue = currentTier === 'heisman' ? 42 : currentTier === 'tier1' ? 217 : currentTier === 'tier2' ? 38 : currentTier === 'tier3' ? 0 : 0;
+  const baseSat = currentTier === 'death' ? 80 : 65;
+
+  for (let i = 0; i < n; i++) {
+    const startAngle = currentRotation + i * arc - Math.PI / 2;
+    const endAngle = startAngle + arc;
+    const light = 25 + (i % 2 === 0 ? 0 : 12);
+
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, startAngle, endAngle);
+    ctx.closePath();
+    ctx.fillStyle = `hsl(${baseHue}, ${baseSat}%, ${light}%)`;
+    ctx.fill();
+    ctx.strokeStyle = '#0a0c10';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Text
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(startAngle + arc / 2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#fff';
+    ctx.font = `${Math.min(11, Math.max(8, 140 / n))}px Barlow, sans-serif`;
+    const label = opts[i].length > 28 ? opts[i].substring(0, 26) + '…' : opts[i];
+    ctx.fillText(label, r - 10, 3);
+    ctx.restore();
+  }
+
+  // Center circle
+  ctx.beginPath();
+  ctx.arc(cx, cy, 28, 0, 2 * Math.PI);
+  ctx.fillStyle = '#0a0c10';
+  ctx.fill();
+  ctx.strokeStyle = tier.color;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.fillStyle = tier.color;
+  ctx.font = 'bold 9px Barlow Condensed, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(tier.label.toUpperCase(), cx, cy + 3);
+}
+
+// Scenarios for each punishment - NCAA/CFB themed backstories
+const SCENARIOS = {
+  heisman: {
+    '0 games missed': "Investigation cleared — the booster payments were determined to be for legitimate NIL work. Your player's Heisman campaign continues untouched. Consider yourself lucky, coach.",
+    '1 game missed': "Your Heisman winner's position coach was caught supplying players with banned pre-workout supplements. Reminiscent of the 2012 Oregon supplements scandal, the NCAA has suspended your top player at that position for 1 game.",
+    '2 games missed': "A leaked video shows your Heisman winner's position coach handing out unmarked pills in the weight room. The athletic department self-imposes a 2-game suspension before the NCAA investigation concludes.",
+    '3 games missed': "The NCAA enforcement staff found text messages between your position coach and a known PED supplier. Similar to multiple SEC violations in the early 2000s, your top player at the Heisman-winning position is hit with a 3-game suspension.",
+    '4 games missed': "Federal investigators working a separate case uncovered systematic doping orchestrated by your position coach. Like the Miami Hurricanes Nevin Shapiro scandal, the fallout is severe — 4 games missed for your top player at that position."
+  },
+  tier1: {
+    'QB1 misses game': "Your starting quarterback was photographed at an unsanctioned autograph signing event. Reminiscent of the Johnny Manziel autograph scandal at Texas A&M, the NCAA has ruled him ineligible for this week's contest.",
+    'RB1 misses game': "Your star running back accepted an impermissible benefit — free tattoos in exchange for signed memorabilia. Sound familiar? The Ohio State tattoo scandal claims another victim. One game, sideline only.",
+    'WR1 misses game': "An anonymous tip revealed your top receiver received cash payments from a booster at a local car dealership. Echoes of the SMU pay-for-play days. The NCAA acts swiftly — 1 game suspension.",
+    'EDGE misses game': "Your top pass rusher failed a random drug test after the bye week. The substance was later identified as a contaminated supplement, but the NCAA doesn't care about excuses. One game, no appeal.",
+    'MIKE misses game': "Your middle linebacker was caught selling complimentary tickets above face value. A violation as old as college football itself. The NCAA benches him for one game.",
+    'CB1 misses game': "Your top corner was spotted driving a car well above his means. An investigation traced it to an agent hoping to build a relationship. Like the Reggie Bush saga at USC, the player sits for a game.",
+    'FS misses game': "Your free safety's social media post revealed he was partying at a booster's yacht over the weekend. The compliance office has no choice — one game suspension for impermissible benefits.",
+    'SS misses game': "Your strong safety was involved in a bar altercation off campus. The university's student conduct policy requires a mandatory one-game sit-down regardless of charges.",
+    'Kicker misses game': "Your kicker was caught gambling on college football games through an offshore account. Like the Calvin Ridley situation in the NFL, the league has zero tolerance. One game.",
+    'Punter misses game': "Your punter was moonlighting as a paid instructor at a local kicking camp without university approval. An impermissible employment violation — he sits one game.",
+    'D coordinator misses game (sim defense)': "Your defensive coordinator was caught using electronic devices to steal offensive signals from the press box. A scandal reminiscent of Spygate crosses into college football. The NCAA forces you to sim the defense for one game.",
+    'MIKE and WILL miss game': "A leaked Venmo transaction shows both your inside linebackers received payments from the same booster. The compliance office suspends both for this week's game pending a full investigation.",
+    'WR and TE miss game': "Your receivers and tight ends were caught participating in an unsanctioned 7-on-7 event hosted by an agent during the offseason. Both your WR1 and TE1 are ruled ineligible for one game.",
+    'LB and CB miss game': "Film room footage leaked showing your LB and CB1 accepting cash from an assistant coach to attend voluntary workouts. Impermissible extra benefits — both sit one game.",
+    'RT and RG miss game': "Your right side of the offensive line was caught in an academic fraud ring — having a tutor complete their coursework. Like the North Carolina academic scandal, the NCAA suspends both for one game.",
+    'DT and EDGE miss game': "Both your defensive linemen tested positive for a banned masking agent during a random screening. The league suspends both for this week's contest while the B-samples are processed.",
+    'FS and SS miss game': "Your safety duo was caught hosting a paid meet-and-greet for recruits at an off-campus apartment — a major recruiting violation. Both are held out of the next game.",
+    'MIKE LB and WILL miss game': "A compliance audit revealed both your inside linebackers received housing benefits above the allowable amount. The overage triggers an automatic one-game suspension for each.",
+    'Kicker and Punter miss game': "Your special teams specialists were running an unauthorized private coaching business on the side, charging high school kids for lessons. Both are ineligible for one game.",
+    "QB1/RB1/WR1 all miss first half": "A wild night out before a road game went viral on social media. Your quarterback, running back, and top receiver were all caught violating team curfew. The head coach benches all three for the first half as a message.",
+    "DT1/EDGE/MIKE all miss first half": "Your defensive front seven leaders organized an unauthorized practice that resulted in a freshman getting injured. The university suspends all three for the first half as the incident is reviewed.",
+    "CB1/CB2/FS all miss first half": "Your entire secondary leadership group was caught using a grad assistant's login to watch film of upcoming opponents illegally obtained through a rival's disgruntled staffer. Half-game suspensions all around.",
+    "Nothing — free pass!": "The investigation turned up nothing. All allegations were baseless, planted by a rival coach trying to get in your head before the big game. You dodged a bullet, coach. Play on."
+  },
+  tier2: {
+    'Cannot recruit home state': "Following an investigation into improper contact with high school coaches in your home state, the NCAA has imposed a one-year ban on in-state recruiting — both in-season and portal. Similar to what happened to Ole Miss under Hugh Freeze.",
+    'Cannot recruit 4/5 stars': "Your program was found to be offering impermissible inducements to top recruits. The NCAA limits you to 3-star or lower prospects for the season. Time to find diamonds in the rough.",
+    'Must recruit & sign 10 × 1-star players': "As a show of good faith to the NCAA during their ongoing investigation, your compliance department agreed to sign 10 one-star players to demonstrate the program's commitment to development over rankings.",
+    'No recruiting visits during season': "A recruiting hostess scandal — reminiscent of the Tennessee allegations in the early 2000s — has resulted in a ban on all in-season recruiting visits. Your staff can only evaluate film.",
+    'Loss of 15 roster spots (70 max)': "Scholarship reductions, just like Penn State faced in the Sandusky aftermath. Your roster cap drops to 70 as the NCAA sends a message about institutional control.",
+    'NFL roster size (53 man)': "Severe scholarship reductions bring your roster down to NFL levels — 53 players. A punishment that echoes the harshest sanctions in NCAA history. Make every spot count.",
+    'Must play all users in season (all away)': "Your program's home venue was found to have unapproved booster luxury suites funneling money to players. The NCAA strips your home-field privilege for the season. Every user game is on the road.",
+    'Dropped to Independent for 3 years': "Conference leadership voted to remove your program following repeated violations. Like UMass or UConn in football limbo, you'll spend 3 years as an Independent trying to schedule games.",
+    'Max 12 scholarships to 4+ star players': "The NCAA's new competitive balance initiative caps your elite recruiting at 12 four-star-or-above scholarships. Your pipeline to blue-chip talent just got a lot narrower.",
+    'Must cut all TEs': "A position group scandal — your entire tight end room was found to be receiving impermissible meals from a local restaurant owner who's also a booster. All TEs must be cut from the roster immediately.",
+    'Must cut all MIKE LB': "Your middle linebacker corps was caught running a side business selling team-issued gear online. The university cuts all MIKE linebackers and the NCAA agrees to not escalate further.",
+    'Must cut all Kickers': "Your kicking unit was involved in a point-shaving investigation tied to gambling operations. While charges were dropped, the university cuts all kickers as a precaution.",
+    'No scholarships after week 5': "An early-season recruiting violation freezes your scholarship offers mid-season. After week 5, you cannot extend any new offers for the remainder of the in-season period.",
+    'No scholarships until week 6': "The NCAA delays your recruiting calendar as part of a probationary period. You cannot offer or sign anyone until week 6 of the season. Your rivals get a head start.",
+    'Cannot recruit offense in season': "An offensive coordinator's recruiting misconduct — similar to the Hugh Freeze phone records scandal — results in a ban on all offensive recruiting during the season.",
+    'Cannot recruit defense in season': "Your defensive staff was found to have improperly contacted recruits during a dead period. The penalty: no defensive recruiting allowed during the regular season.",
+    'Cannot recruit offense in portal': "Portal tampering charges against your offensive staff — contacting players before they officially entered the portal. Your punishment: no offensive portal pickups this cycle.",
+    'Cannot recruit defense in portal': "Anonymous tips from rival programs revealed your defensive staff was communicating with portal targets through third-party intermediaries. Defensive portal access is revoked.",
+    'Cannot recruit in season': "A comprehensive recruiting freeze, similar to what Louisville endured during the Rick Pitino era — no in-season recruiting of any kind. Your staff can only coach the players already on the roster.",
+    'Cannot use portal': "Your program abused the transfer portal by making promises it couldn't keep, leaving multiple players stranded. The NCAA revokes your portal access for the entire cycle.",
+    'Unable to convince players to stay': "Word has spread about the toxic culture in your program. Players are transferring out and commits are decommitting. You cannot prevent any player from leaving this cycle.",
+    'Free choice: pick any Tier 2': "The NCAA committee couldn't agree on a specific penalty, so they're letting the league decide. You must select one Tier 2 punishment to impose on yourself. Choose wisely."
+  },
+  tier3: {
+    'Abandon school — take any offer': "The walls are closing in. Federal investigators, NCAA enforcement, and a scathing ESPN exposé have made your position untenable. Like Lane Kiffin fleeing Tennessee in the dead of night, you must leave immediately and take whatever job is available.",
+    'Abandon school — second round offers only': "Your program is under a show-cause order. You can leave, but the stain on your record means only second-round job offers will consider you. Think of it as college football's witness protection program.",
+    'Forced sim loss / exit 1 year of playoffs': "The NCAA has imposed a postseason ban on your program — just like what happened to USC after the Reggie Bush investigation. You're forced to sim a loss and cannot participate in the playoffs for one full year.",
+    'Forgo all recruiting for 1 year': "A complete one-year recruiting moratorium. No high school visits, no portal, no offers. Similar to the death penalty lite that SMU narrowly avoided a second time. Survive with what you have.",
+    'NFL roster size for 3 years (53)': "Three years of severe scholarship reductions reduce your roster to NFL levels. This is the kind of punishment that nearly ended Penn State football. Your walk-on program better be strong.",
+    'Must recruit & sign 20 × 1-star players': "The NCAA mandates that you demonstrate commitment to player development by signing 20 one-star recruits. Your scouting department is about to earn their paycheck.",
+    'Spin Tier 2 wheel 3× for season': "The infractions committee couldn't settle on just one penalty. In a move unprecedented in NCAA history, you must spin the Tier 2 wheel three separate times and live with all three punishments simultaneously.",
+    'Tier 1 all games + Tier 2 for season': "A cascading penalty structure — you spin Tier 1 before every single game this season (including playoffs), AND take a full Tier 2 punishment on top. The NCAA is making an example of you.",
+    'Spin Tier 2 wheel 2× for season': "Double jeopardy. Two Tier 2 punishments stacked on top of each other for the entire season. Your compliance office just handed in their resignations.",
+    'Pick any 1 Tier 3 consequence': "The committee has spoken — you must choose your own punishment from the Tier 3 list. A psychological punishment in itself. Which poison do you pick?"
+  },
+  death: {
+    'Retire & restart at 1-star program': "Your coaching career as you know it is over. Like the SMU death penalty that ended careers and erased a program's identity, you must retire your current coach and start fresh at the lowest level of college football.",
+    'Take 2★ or less job — stay 3 years': "Banished to the bottom of college football for three years. You must take a 2-star or lower program and cannot leave for 36 months. Consider it your penance — a coaching exile reminiscent of coaches blacklisted after major scandals.",
+    'Only 2-star or less recruits for 3 years': "Three years of recruiting purgatory. Only 2-star or lower prospects will even consider your program. The blue-chip pipeline is completely severed, and your rivals are circling your former targets.",
+    'Only 1-star recruits for 3 years': "The harshest recruiting restriction possible. For three full years, only 1-star players will sign with your program. This is worse than what SMU faced — at least they could still try to recruit. You're building from absolute scratch.",
+    'Forgo portal for 3 years': "The transfer portal — your lifeline for quick roster fixes — is completely off limits for three years. No incoming transfers, period. You must develop every player from the high school ranks.",
+    'Forgo in-season recruiting for 3 years': "For three years, your coaching staff cannot recruit during the season at all. No visits, no calls, no offers from September through January. Your rivals will feast on your territory.",
+    'Forgo playoffs for 3 years': "A three-year postseason ban. Even if you go undefeated, your season ends after the regular schedule. Just like USC's bowl ban after the Bush scandal, your players will watch the playoffs from home."
+  }
+};
+
+function spinWheel() {
+  if (isSpinning) return;
+  isSpinning = true;
+
+  const btn = document.getElementById('spinBtn');
+  btn.style.opacity = '0.5';
+  btn.style.cursor = 'not-allowed';
+
+  const tier = TIER_DATA[currentTier];
+  const n = tier.options.length;
+  const arc = (2 * Math.PI) / n;
+
+  // Pick random winner
+  const winnerIdx = Math.floor(Math.random() * n);
+
+  // Clockwise = negative rotation in canvas coordinates
+  // We want at least 3 full clockwise rotations (negative direction)
+  const minSpins = 3;
+  const extraSpins = minSpins + 2 + Math.random() * 2; // 5-7 full rotations total, always 3+ minimum
+
+  // Target: the middle of winnerIdx segment should land at the pointer (top = -PI/2)
+  // After rotation, segment i center is at: currentRotation + i*arc + arc/2 - PI/2
+  // We want that to equal -PI/2 (mod 2PI), so currentRotation + i*arc + arc/2 = 0 (mod 2PI)
+  // So final rotation = -(winnerIdx * arc + arc/2) mod 2PI
+  const segCenter = winnerIdx * arc + arc / 2;
+  // Normalize to get final angle
+  let finalAngle = -segCenter;
+  // Ensure clockwise: total delta must be negative (clockwise in canvas)
+  let delta = finalAngle - currentRotation - extraSpins * 2 * Math.PI;
+  // delta is always negative (clockwise) since we subtract extraSpins
+
+  const duration = 4500 + Math.random() * 1000;
+  const startTime = performance.now();
+  const startRotation = currentRotation;
+
+  function animate(now) {
+    const elapsed = now - startTime;
+    const t = Math.min(elapsed / duration, 1);
+    // Ease out quart for satisfying deceleration
+    const ease = 1 - Math.pow(1 - t, 4);
+    currentRotation = startRotation + delta * ease;
+    drawWheel();
+
+    if (t < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      currentRotation = finalAngle;
+      drawWheel();
+      isSpinning = false;
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+      // Show result + scenario
+      const result = tier.options[winnerIdx];
+      const scenarios = SCENARIOS[currentTier];
+      const scenario = scenarios[result] || 'The NCAA investigation is still pending. Stay tuned for further developments.';
+      document.getElementById('spinResult').innerHTML = `
+        <div style="width:100%;">
+          <div style="font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:${tier.color}; margin-bottom:8px;">${tier.label}</div>
+          <div style="font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:1px; color:var(--text-primary); margin-bottom:16px;">${result}</div>
+          <div style="border-top:1px solid var(--border); padding-top:16px; font-size:13px; color:var(--text-secondary); line-height:1.7; text-align:left; font-style:italic;">${scenario}</div>
+        </div>
+      `;
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+// Initial draw
+drawWheel();
 </script>
 </body>
 </html>

@@ -1048,13 +1048,13 @@ body {
         </div>
       </div>
       <div class="bio-stats">
-        <div class="bio-stat"><div class="bio-stat-value" style="color:#2ecc71;">11</div><div class="bio-stat-label">Wins</div></div>
+        <div class="bio-stat"><div class="bio-stat-value" style="color:#2ecc71;">12</div><div class="bio-stat-label">Wins</div></div>
         <div class="bio-stat"><div class="bio-stat-value" style="color:#e74c3c;">3</div><div class="bio-stat-label">Losses</div></div>
-        <div class="bio-stat"><div class="bio-stat-value" style="color:#d4a843;">4</div><div class="bio-stat-label">Nattys</div></div>
+        <div class="bio-stat"><div class="bio-stat-value" style="color:#d4a843;">5</div><div class="bio-stat-label">Nattys</div></div>
         <div class="bio-stat"><div class="bio-stat-value" style="color:#d4a843;">6</div><div class="bio-stat-label">Heismans</div></div>
       </div>
       <div class="bio-text">
-        Michael holds the most wins in league history, having built his first run at <strong>Navy</strong> — a small program he turned into a powerhouse, capturing <strong>three national championships</strong> with the Midshipmen. However, his legacy carries a significant asterisk: Michael's <strong>2026 national championship</strong> came with a direct <strong>violation of league sanctions</strong>, making him the only coach in dynasty history to break sanction rules to win a title — a decision that stained his program's prestige and remains a sore subject among rival coaches. After being forced out by the sanctions system, he moved to <strong>Michigan</strong> and then <strong>Oregon</strong>, where he added another natty. He holds a 6-2 edge over Angry in the league's marquee rivalry and has produced 6 Heisman winners, but the questions around his 2026 title continue to follow him.
+        Michael holds the most wins in league history, having built his first run at <strong>Navy</strong> — a small program he turned into a powerhouse, capturing <strong>three national championships</strong> with the Midshipmen. However, his legacy carries a significant asterisk: Michael's <strong>2026 national championship</strong> came with a direct <strong>violation of league sanctions</strong>, making him the only coach in dynasty history to break sanction rules to win a title — a decision that stained his program's prestige and remains a sore subject among rival coaches. After being forced out by the sanctions system, he moved to <strong>Michigan</strong> and then <strong>Oregon</strong>, where he's now captured <strong>two national championships</strong> with the Ducks — including a thrilling 31-30 win over Eagle's Notre Dame in 2034. He holds a 6-2 edge over Angry in the league's marquee rivalry and has produced 6 Heisman winners, but the questions around his 2026 title continue to follow him.
       </div>
       <div class="bio-programs">
         <div class="bio-programs-label">Programs Coached</div>
@@ -1108,7 +1108,7 @@ body {
       </div>
       <div class="bio-stats">
         <div class="bio-stat"><div class="bio-stat-value" style="color:#2ecc71;">3</div><div class="bio-stat-label">Wins</div></div>
-        <div class="bio-stat"><div class="bio-stat-value" style="color:#e74c3c;">4</div><div class="bio-stat-label">Losses</div></div>
+        <div class="bio-stat"><div class="bio-stat-value" style="color:#e74c3c;">5</div><div class="bio-stat-label">Losses</div></div>
         <div class="bio-stat"><div class="bio-stat-value" style="color:#d4a843;">2</div><div class="bio-stat-label">Nattys</div></div>
         <div class="bio-stat"><div class="bio-stat-value" style="color:#d4a843;">0</div><div class="bio-stat-label">Heismans</div></div>
       </div>
@@ -1545,15 +1545,15 @@ const H2H = {
     Angry:   { BigLaw:'1-0', Gooch:'—', Michael:'2-6', Eagle:'2-1', total:'5-7' },
     BigLaw:  { Angry:'0-1', Gooch:'1-0', Michael:'—', Eagle:'—', total:'1-1' },
     Gooch:   { Angry:'—', BigLaw:'0-1', Michael:'0-3', Eagle:'0-1', total:'0-5' },
-    Michael: { Angry:'6-2', BigLaw:'—', Gooch:'3-0', Eagle:'2-1', total:'11-3' },
-    Eagle:   { Angry:'1-2', BigLaw:'—', Gooch:'1-0', Michael:'1-2', total:'3-4' },
+    Michael: { Angry:'6-2', BigLaw:'—', Gooch:'3-0', Eagle:'3-1', total:'12-3' },
+    Eagle:   { Angry:'1-2', BigLaw:'—', Gooch:'1-0', Michael:'1-3', total:'3-5' },
   },
   natty: {
     Angry:   { BigLaw:'1-0', Gooch:'—', Michael:'—', Eagle:'1-1', total:'2-1' },
     BigLaw:  { Angry:'0-1', Gooch:'—', Michael:'—', Eagle:'—', total:'0-1' },
     Gooch:   { Angry:'—', BigLaw:'—', Michael:'—', Eagle:'—', total:'0-0' },
-    Michael: { Angry:'—', BigLaw:'—', Gooch:'—', Eagle:'2-1', total:'2-1' },
-    Eagle:   { Angry:'1-1', BigLaw:'—', Gooch:'—', Michael:'1-2', total:'2-3' },
+    Michael: { Angry:'—', BigLaw:'—', Gooch:'—', Eagle:'3-1', total:'3-1' },
+    Eagle:   { Angry:'1-1', BigLaw:'—', Gooch:'—', Michael:'1-3', total:'2-4' },
   },
   playoffs: {
     Angry:   { BigLaw:'—', Gooch:'—', Michael:'1-2', Eagle:'—', total:'1-2' },
@@ -1579,6 +1579,7 @@ const H2H = {
 };
 
 const MATCHES = [
+  { home:'Michael (Oregon)', hScore:31, away:'Eagle (Notre Dame)', aScore:30, year:2034, type:'National Championship', winner:'Michael', loser:'Eagle', note:'' },
   { home:'Michael (Oregon)', hScore:45, away:'Angry (Ohio State)', aScore:7, year:2034, type:'Playoffs', winner:'Michael', loser:'Angry', note:'' },
   { home:'Eagle (Notre Dame)', hScore:42, away:'Gooch (Oregon State)', aScore:28, year:2034, type:'Playoffs', winner:'Eagle', loser:'Gooch', note:'' },
   { home:'Michael (Oregon)', hScore:49, away:'Angry (Ohio State)', aScore:35, year:2034, type:'Conf Championship', winner:'Michael', loser:'Angry', note:'' },
@@ -1603,7 +1604,7 @@ const MATCHES = [
 
 const AWARDS = {
   'National Championships': [
-    { user:'Michael', count:4, detail:'Navy (3), Oregon (1)' },
+    { user:'Michael', count:5, detail:'Navy (3), Oregon (2)' },
     { user:'Angry', count:3, detail:'USC (3)' },
     { user:'Eagle', count:2, detail:'Cal (1), Alabama (1)' },
     { user:'BigLaw', count:0, detail:'' },
@@ -1793,19 +1794,19 @@ function setMatchFilter(filter) {
 // ============================================================
 renderPlayerCards();
 renderBarChart('wins-chart', [
-  { name:'Michael', value:11 },
+  { name:'Michael', value:12 },
   { name:'Angry', value:5 },
   { name:'Eagle', value:3 },
   { name:'BigLaw', value:1 },
   { name:'Gooch', value:0 },
-], 11);
+], 12);
 renderBarChart('nattys-chart', [
-  { name:'Michael', value:4 },
+  { name:'Michael', value:5 },
   { name:'Angry', value:3 },
   { name:'Eagle', value:2 },
   { name:'BigLaw', value:0 },
   { name:'Gooch', value:0 },
-], 4);
+], 5);
 renderH2HTable('all');
 renderMatchLog('all');
 renderAwards();

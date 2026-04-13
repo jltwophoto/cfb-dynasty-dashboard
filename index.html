@@ -1003,7 +1003,7 @@ body {
 <!-- ==================== MATCH LOG ==================== -->
 <div class="section" id="matchlog">
   <div class="section-title">Game Log</div>
-  <div class="section-sub">Every head-to-head matchup in league history (2025 – 2034)</div>
+  <div class="section-sub">Every head-to-head matchup in league history (2025 – 2035)</div>
 
   <div class="filter-bar" id="match-filters">
     <div class="filter-btn active" onclick="setMatchFilter('all')">All Games</div>
@@ -1048,7 +1048,7 @@ body {
         </div>
       </div>
       <div class="bio-stats">
-        <div class="bio-stat"><div class="bio-stat-value" style="color:#2ecc71;">12</div><div class="bio-stat-label">Wins</div></div>
+        <div class="bio-stat"><div class="bio-stat-value" style="color:#2ecc71;">13</div><div class="bio-stat-label">Wins</div></div>
         <div class="bio-stat"><div class="bio-stat-value" style="color:#e74c3c;">3</div><div class="bio-stat-label">Losses</div></div>
         <div class="bio-stat"><div class="bio-stat-value" style="color:#d4a843;">5</div><div class="bio-stat-label">Nattys</div></div>
         <div class="bio-stat"><div class="bio-stat-value" style="color:#d4a843;">6</div><div class="bio-stat-label">Heismans</div></div>
@@ -1171,12 +1171,12 @@ body {
       </div>
       <div class="bio-stats">
         <div class="bio-stat"><div class="bio-stat-value" style="color:#2ecc71;">0</div><div class="bio-stat-label">Wins</div></div>
-        <div class="bio-stat"><div class="bio-stat-value" style="color:#e74c3c;">5</div><div class="bio-stat-label">Losses</div></div>
+        <div class="bio-stat"><div class="bio-stat-value" style="color:#e74c3c;">6</div><div class="bio-stat-label">Losses</div></div>
         <div class="bio-stat"><div class="bio-stat-value" style="color:#d4a843;">0</div><div class="bio-stat-label">Nattys</div></div>
         <div class="bio-stat"><div class="bio-stat-value" style="color:#d4a843;">1</div><div class="bio-stat-label">Heismans</div></div>
       </div>
       <div class="bio-text">
-        What Gooch lacks in trophies, he makes up for in <strong>unwavering loyalty</strong>. An incredible <strong>11 seasons at Oregon State</strong> makes him not only the longest-tenured coach at a single program in league history, but the <strong>only coach to have never left his program</strong> — a distinction no one else can claim. While the Beavers haven't broken through to the national stage yet, Gooch has built a reputation as one of the league's premier <strong>running back developers</strong>, consistently recruiting and producing some of the <strong>top RBs in the nation</strong> year after year. His 0-5 record against other users doesn't tell the full story — Gooch keeps grinding, keeps building, and keeps his program competitive. Every dynasty league needs its ride-or-die loyalist, and Gooch is exactly that.
+        What Gooch lacks in trophies, he makes up for in <strong>unwavering loyalty</strong>. An incredible <strong>11 seasons at Oregon State</strong> makes him not only the longest-tenured coach at a single program in league history, but the <strong>only coach to have never left his program</strong> — a distinction no one else can claim. While the Beavers haven't broken through to the national stage yet, Gooch has built a reputation as one of the league's premier <strong>running back developers</strong>, consistently recruiting and producing some of the <strong>top RBs in the nation</strong> year after year. His 0-6 record against other users doesn't tell the full story — Gooch keeps grinding, keeps building, and keeps his program competitive. Every dynasty league needs its ride-or-die loyalist, and Gooch is exactly that.
       </div>
       <div class="bio-programs">
         <div class="bio-programs-label">Programs Coached</div>
@@ -1519,7 +1519,7 @@ body {
 </div>
 
 <div class="footer">
-  CFB DYNASTY LEAGUE HQ &bull; DATA THROUGH 2034 SEASON &bull; BUILT FOR THE CULTURE
+  CFB DYNASTY LEAGUE HQ &bull; DATA THROUGH 2035 SEASON &bull; BUILT FOR THE CULTURE
 </div>
 
 <script>
@@ -1544,8 +1544,8 @@ const H2H = {
   all: {
     Angry:   { BigLaw:'1-0', Gooch:'—', Michael:'2-6', Eagle:'2-1', total:'5-7' },
     BigLaw:  { Angry:'0-1', Gooch:'1-0', Michael:'—', Eagle:'—', total:'1-1' },
-    Gooch:   { Angry:'—', BigLaw:'0-1', Michael:'0-3', Eagle:'0-1', total:'0-5' },
-    Michael: { Angry:'6-2', BigLaw:'—', Gooch:'3-0', Eagle:'3-1', total:'12-3' },
+    Gooch:   { Angry:'—', BigLaw:'0-1', Michael:'0-4', Eagle:'0-1', total:'0-6' },
+    Michael: { Angry:'6-2', BigLaw:'—', Gooch:'4-0', Eagle:'3-1', total:'13-3' },
     Eagle:   { Angry:'1-2', BigLaw:'—', Gooch:'1-0', Michael:'1-3', total:'3-5' },
   },
   natty: {
@@ -1572,13 +1572,14 @@ const H2H = {
   regular: {
     Angry:   { BigLaw:'—', Gooch:'—', Michael:'—', Eagle:'1-0', total:'1-0' },
     BigLaw:  { Angry:'—', Gooch:'—', Michael:'—', Eagle:'—', total:'0-0' },
-    Gooch:   { Angry:'—', BigLaw:'—', Michael:'0-2', Eagle:'—', total:'0-2' },
-    Michael: { Angry:'—', BigLaw:'—', Gooch:'2-0', Eagle:'—', total:'2-0' },
+    Gooch:   { Angry:'—', BigLaw:'—', Michael:'0-3', Eagle:'—', total:'0-3' },
+    Michael: { Angry:'—', BigLaw:'—', Gooch:'3-0', Eagle:'—', total:'3-0' },
     Eagle:   { Angry:'0-1', BigLaw:'—', Gooch:'—', Michael:'—', total:'0-1' },
   }
 };
 
 const MATCHES = [
+  { home:'Michael (Oregon)', hScore:35, away:'Gooch (Oregon State)', aScore:28, year:2035, type:'Regular Season', winner:'Michael', loser:'Gooch', note:'' },
   { home:'Michael (Oregon)', hScore:31, away:'Eagle (Notre Dame)', aScore:30, year:2034, type:'National Championship', winner:'Michael', loser:'Eagle', note:'' },
   { home:'Michael (Oregon)', hScore:45, away:'Angry (Ohio State)', aScore:7, year:2034, type:'Playoffs', winner:'Michael', loser:'Angry', note:'' },
   { home:'Eagle (Notre Dame)', hScore:42, away:'Gooch (Oregon State)', aScore:28, year:2034, type:'Playoffs', winner:'Eagle', loser:'Gooch', note:'' },
@@ -1794,12 +1795,12 @@ function setMatchFilter(filter) {
 // ============================================================
 renderPlayerCards();
 renderBarChart('wins-chart', [
-  { name:'Michael', value:12 },
+  { name:'Michael', value:13 },
   { name:'Angry', value:5 },
   { name:'Eagle', value:3 },
   { name:'BigLaw', value:1 },
   { name:'Gooch', value:0 },
-], 12);
+], 13);
 renderBarChart('nattys-chart', [
   { name:'Michael', value:5 },
   { name:'Angry', value:3 },

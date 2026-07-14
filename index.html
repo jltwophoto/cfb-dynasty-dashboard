@@ -1955,9 +1955,9 @@ function renderPerformance2027() {
       <div class="bio-text" style="margin-top:14px; font-size:14px;">${style.text}</div>
       <div class="tier-body-label" style="margin-top:16px;">Top Performers</div>
       <table class="stat-table" style="margin-top:6px;">
-        <thead><tr><th>Player</th><th>Pos</th><th>Line</th></tr></thead>
+        <thead><tr><th>Player</th><th>Team</th><th>Year</th><th>Pos</th><th>Line</th></tr></thead>
         <tbody>
-          ${topPerformers.map(p => `<tr><td>${p.year} ${p.name}</td><td>${teamAbbr(p.team)} ${p.pos}</td><td>${statLine(p)}</td></tr>`).join('')}
+          ${topPerformers.map(p => `<tr><td>${p.name}</td><td>${teamAbbr(p.team)}</td><td><em>(${p.year})</em></td><td>${p.pos}</td><td>${statLine(p)}</td></tr>`).join('')}
         </tbody>
       </table>
     </div>
